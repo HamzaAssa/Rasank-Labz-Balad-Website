@@ -28,7 +28,9 @@ Route::post('/dashboard/store', [DashboardController::class, 'store']);
 
 # unverified words 
 Route::get('/unverified-words', [UnverifiedWordController::class, 'index']);
-Route::post('/unverified-words/store', [UnverifiedWordController::class, 'store'])->name('add_unverified_words');
+Route::post('/unverified-words/cerate', [UnverifiedWordController::class, 'store'])->name('add_unverified_words');
+Route::post('/unverified-words/update', [UnverifiedWordController::class, 'update'])->name('update_unverified_words');
+Route::post('/unverified-words/delete', [UnverifiedWordController::class, 'destroy'])->name('delete_unverified_words');
 
 # verified words
 Route::get('/verified-words', [VerifiedWordController::class, 'index']);

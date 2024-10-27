@@ -12,7 +12,16 @@
 }
 .data-table-container th {
     color: #646464;
+    text-align: center;
 }
+.data-table-container td {
+    text-align: center;
+}
+
+.rtl {
+  font-family: "Noto Nastaliq Urdu", serif;
+}
+
 .poppins-thin {
     font-family: "Poppins", sans-serif;
     font-weight: 100;

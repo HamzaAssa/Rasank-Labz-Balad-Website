@@ -44,7 +44,7 @@ class UnverifiedWordController extends Controller
             $word->save();
         });
 
-        return redirect()->back()->with('success', 'Your action was successful!');
+        return redirect()->back()->with('success', 'Word added successfully!');
     }
 
     /**
@@ -77,7 +77,13 @@ class UnverifiedWordController extends Controller
      */
     public function update(Request $request, UnverifiedWord $unverifiedWord)
     {
-        //
+        DB::transaction(function() use($request){
+            $word = UnverifiedWord::find($request->id);
+            $word->word = $request->word;
+            $word->language = $request->language;
+            $word->save();
+        });
+        return redirect()->back()->with('success', 'Word updated successfully!');
     }
 
     /**
@@ -86,8 +92,12 @@ class UnverifiedWordController extends Controller
      * @param  \App\Models\UnverifiedWord  $unverifiedWord
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UnverifiedWord $unverifiedWord)
+    public function destroy(Request $request)
     {
-        //
+        DB::transaction(function() use($request){
+            $word = UnverifiedWord::find($request->id);
+            $word->delete();
+        });
+        return redirect()->back()->with('danger', 'Word deleted successfully!');
     }
 }
