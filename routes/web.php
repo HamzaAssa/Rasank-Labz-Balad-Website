@@ -18,10 +18,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',function () {
-    return redirect('/dashboard');
+    return redirect('/login');
 });
 
+Auth::routes();
 
+Route::middleware(['auth'])->group(function () {
 # Dashboard words 
 Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::post('/dashboard/store', [DashboardController::class, 'store']);
@@ -35,3 +37,5 @@ Route::post('/unverified-words/delete', [UnverifiedWordController::class, 'destr
 # verified words
 Route::get('/verified-words', [VerifiedWordController::class, 'index']);
 Route::post('/verified-words/store', [VerifiedWordController::class, 'store']);
+
+});
