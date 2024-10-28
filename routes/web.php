@@ -26,7 +26,7 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
 # Dashboard words 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('role:admin');;
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('role:admin,verifier');
 Route::post('/dashboard/store', [DashboardController::class, 'store']);
 
 # unverified words 

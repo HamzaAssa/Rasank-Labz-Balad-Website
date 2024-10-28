@@ -8,11 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ...$roles) // Accept multiple roles
     {
-        // Check if the user is authenticated and has the correct role
-        if (Auth::check() && Auth::user()->hasRole($role)) {
-            return $next($request);
+        // Check if the user is authenticated
+        if (Auth::check()) {
+            // Loop through each role and check if the user has at least one of them
+            foreach ($roles as $role) {
+                if (Auth::user()->hasRole($role)) {
+                    return $next($request); // Allow access if any role matches
+                }
+            }
         }
 
         // Redirect or show an error message if the user does not have the required role
