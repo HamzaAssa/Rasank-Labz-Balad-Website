@@ -23,5 +23,13 @@
                 Unverified Words
             </a>
         </li>
+        @if(Auth::user() && Auth::user()->role === 'admin')
+        <li class="nav-item">
+            <a class="nav-link text-light" href="users">
+                <i class="fa-solid fa-user"></i>
+                Users
+            </a>
+        </li>
+        @endif 
     </ul>
 </div>

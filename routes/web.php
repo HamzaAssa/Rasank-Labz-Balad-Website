@@ -3,6 +3,7 @@
 use App\Http\Controllers\UnverifiedWordController;
 use App\Http\Controllers\VerifiedWordController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,7 +26,7 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
 # Dashboard words 
-Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('role:admin');;
 Route::post('/dashboard/store', [DashboardController::class, 'store']);
 
 # unverified words 
@@ -37,5 +38,9 @@ Route::post('/unverified-words/delete', [UnverifiedWordController::class, 'destr
 # verified words
 Route::get('/verified-words', [VerifiedWordController::class, 'index']);
 Route::post('/verified-words/store', [VerifiedWordController::class, 'store']);
+
+# users 
+Route::get('/users',[UsersController::class,'index']);
+
 
 });
