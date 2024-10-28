@@ -31,5 +31,20 @@
             </a>
         </li>
         @endif 
+
+        @auth
+        <li class="nav-item">
+                <a class="nav-link text-light" href="{{ route('logout') }}"
+                   onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">
+                                 <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+        </li>
+    @endauth
+
     </ul>
 </div>
