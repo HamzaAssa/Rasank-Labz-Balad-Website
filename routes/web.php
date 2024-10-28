@@ -42,5 +42,4 @@ Route::post('/verified-words/store', [VerifiedWordController::class, 'store']);
 # users 
 Route::get('/users',[UsersController::class,'index']);
 
-
 });
