@@ -1,28 +1,9 @@
-# Set default behavior to automatically normalize line endings
+# Use LF for all text files
 * text=auto
 
-# Explicitly declare text files we want to always normalize and convert to LF
-*.php text eol=lf
-*.js text eol=lf
-*.css text eol=lf
-*.scss text eol=lf
-*.html text eol=lf
-*.vue text eol=lf
-*.json text eol=lf
-*.md text eol=lf
-*.blade.php text eol=lf
-*.yaml text eol=lf
-*.yml text eol=lf
-*.xml text eol=lf
-
-# Binary files (no normalization)
-*.png binary
-*.jpg binary
-*.jpeg binary
-*.gif binary
-*.ico binary
-*.pdf binary
-*.zip binary
-*.gz binary
-*.woff binary
-*.woff2 binary
+# If you want to explicitly set specific file types
+*.php text
+*.blade.php text
+*.js text
+*.css text
+*.html text
