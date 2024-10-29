@@ -1,6 +1,5 @@
-<div class="d-flex flex-column  flex-shrink-0 p-3 text-light">
+<div class="d-flex flex-column flex-shrink-0 p-3 text-light" style="height: 100vh; position: fixed; top: 0; left: 0; bottom: 0;">
     <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none" href="/dashboard">
-        &nbsp;
         <span class="fs-4">Rasaank Labz Balad</span>
     </a>
     <hr>
@@ -31,20 +30,18 @@
             </a>
         </li>
         @endif 
-
-        @auth
-        <li class="nav-item">
-                <a class="nav-link text-light" href="{{ route('logout') }}"
-                   onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();">
-                                 <i class="fa-solid fa-right-from-bracket"></i>
-                    Logout
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-        </li>
-    @endauth
-
     </ul>
+
+    <div class="mt-auto pt-3" style="position: absolute; bottom: 20px; width: 100%;">
+        @auth
+        <a class="nav-link text-muted fw-bold border-top pt-3" href="{{ route('logout') }}"
+           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+        @endauth
+    </div>
 </div>
