@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('definition_id');
             $table->string('example');
             $table->timestamps();
+            $table->softDeletes();
             $table->engine = 'InnoDB';
         });
     }

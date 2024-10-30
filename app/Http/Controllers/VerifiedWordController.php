@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VerifiedWord;
+use App\Models\Word;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class VerifiedWordController extends Controller
 {
@@ -14,7 +16,8 @@ class VerifiedWordController extends Controller
      */
     public function index()
     {
-        return view('pages.verified_words.index');
+        $data = Word::where('status', 2)->where('id', '>', 4)->get();
+        return view('pages.verified_words.index', ['data' => $data]);
     }
 
     /**
@@ -35,19 +38,6 @@ class VerifiedWordController extends Controller
      */
     public function store(Request $request)
     {
-     // Validate request data
-        $validated = $request->validate([
-            'word' => 'required|string',
-            'language' => 'required|string',
-        ]);
-    
-        // Save the data
-        $words = new VerifiedWord();
-        $words->word = $validated['word'];
-        $words->language = $validated['language'];
-        $words->save();
-    
-        return response()->json(['message' => 'Word saved successfully!', 'words' => $words], 201);
     
     }
 

@@ -62,6 +62,25 @@
             </div>
         </div>
 
+        <div class="modal fade" id="confirmModal" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true"
+            tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="text-center">Do you confirm this action?</p>
+                        <form id="confirmform" action="" method="post">
+                            @csrf
+                            <input id="confirmid" name="id" type="hidden" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">Confirm</button>
+                        </form>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>

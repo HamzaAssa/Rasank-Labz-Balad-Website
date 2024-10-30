@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Example;
+use App\Models\Definition;
+use App\Models\Word;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class ExampleController extends Controller
 {
@@ -12,9 +16,12 @@ class ExampleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $example = Example::where('definition_id', $id)->get();
+        $definition = Definition::find($id);
+        $word = Word::find($definition->word_id);
+        return view('pages.example.index', ['data' => $example, 'word' => $word, 'definition' => $definition]);
     }
 
     /**
@@ -35,7 +42,13 @@ class ExampleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::transaction(function() use($request){
+            $example = new Example();
+            $example->definition_id = $request->definition_id;
+            $example->example = $request->example;
+            $example->save();
+        });
+        return redirect()->back()->with('success', 'Example added successfully!');
     }
 
     /**
@@ -78,8 +91,12 @@ class ExampleController extends Controller
      * @param  \App\Models\Example  $example
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Example $example)
+    public function destroy(Request $request)
     {
-        //
+        DB::transaction(function() use($request){
+            $example = Example::find($request->id);
+            $example->delete();
+        });
+        return redirect()->back()->with('danger', 'Example deleted successfully!');
     }
 }

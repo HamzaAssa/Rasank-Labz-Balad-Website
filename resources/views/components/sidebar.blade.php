@@ -12,13 +12,13 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-light" href="verified-words">
+            <a class="nav-link text-light" href="/verified-words">
                 <i class="fa-solid fa-file-circle-check"></i>
                 Words
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-light" href="unverified-words">
+            <a class="nav-link text-light" href="/unverified-words">
                 <i class="fa-solid fa-file-circle-xmark"></i>
                 Unverified Words
             </a>

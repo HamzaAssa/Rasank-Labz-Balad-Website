@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Definition;
+use App\Models\Word;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DefinitionController extends Controller
 {
@@ -12,9 +14,11 @@ class DefinitionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $data = Definition::where('word_id', $id)->get();
+        $word = Word::find($id);
+        return view('pages.definition.index', ['data' => $data, 'word' => $word]);
     }
 
     /**
@@ -35,7 +39,13 @@ class DefinitionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::transaction(function() use($request){
+            $definition = new Definition();
+            $definition->word_id = $request->word_id;
+            $definition->definition = $request->definition;
+            $definition->save();
+        });
+        return redirect()->back()->with('success', 'Definition added successfully!');
     }
 
     /**
@@ -78,8 +88,15 @@ class DefinitionController extends Controller
      * @param  \App\Models\Definition  $definition
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Definition $definition)
+    public function destroy(Request $request)
     {
-        //
+        DB::transaction(function() use($request){
+            $definition = Definition::with('examples')->find($request->id);
+            foreach ($definition->examples  as $example) {
+                $example->delete();
+            }
+            $definition->delete();
+        });
+        return redirect()->back()->with('danger', 'Definition deleted successfully!');
     }
 }

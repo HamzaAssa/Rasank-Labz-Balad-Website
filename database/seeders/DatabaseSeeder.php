@@ -1,6 +1,8 @@
 <?php
 
 namespace Database\Seeders;
+use Illuminate\Support\Facades\DB;
+
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,11 +16,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        DB::table('words')->insert([
+            'word' => '',
+            'language' => 'BL',
+            'status' => 2
+        ]);
+        DB::table('words')->insert([
+            'word' => '',
+            'language' => 'UR',
+            'status' => 2
+        ]);
+        DB::table('words')->insert([
+            'word' => '',
+            'language' => 'EN',
+            'status' => 2
+        ]);
+        DB::table('words')->insert([
+            'word' => '',
+            'language' => 'RB',
+            'status' => 2
+        ]);
     }
 }

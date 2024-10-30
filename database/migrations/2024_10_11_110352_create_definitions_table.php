@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('word_id');
             $table->string('definition');
             $table->timestamps();
+            $table->softDeletes();
             $table->engine = 'InnoDB';
         });
     }
