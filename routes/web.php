@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UnverifiedWordController;
 use App\Http\Controllers\VerifiedWordController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 
