@@ -12,20 +12,20 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-light" href="/verified-words">
-                <i class="fa-solid fa-file-circle-check"></i>
-                Words
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link text-light" href="/unverified-words">
                 <i class="fa-solid fa-file-circle-xmark"></i>
                 Unverified Words
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" href="/verified-words">
+                <i class="fa-solid fa-file-circle-check"></i>
+                Verified Words
+            </a>
+        </li>
         @if (Auth::user() && Auth::user()->role === 'admin')
             <li class="nav-item">
-                <a class="nav-link text-light" href="users">
+                <a class="nav-link text-light" href="/users">
                     <i class="fa-solid fa-user"></i>
                     Users
                 </a>

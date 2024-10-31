@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('roman_balochi_id')->default(4)->constrained('words')->onDelete('cascade');  
             // $table->unique(['balochi_id', 'urdu_id', 'english_id', 'roman_balochi_id']);
             $table->date('date');
+            $table->integer('status')->default(0);
             $table->timestamps();
             $table->softDeletes();
             $table->engine = 'InnoDB';

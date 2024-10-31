@@ -107,6 +107,7 @@
                                         href="/definition/wordid/{{ $row->id }}">Definition</a>
                                     <button class="btn btn-warning submit mx-1 text-light"
                                         data-action="{{ route('verify_unverified_words') }}" data-id="{{ $row->id }}"
+                                        data-text="Verifying this word will also veriy all it's meanings."
                                         data-bs-target="#confirmModal" data-bs-toggle="modal">
                                         Verify</button>
                                 @else

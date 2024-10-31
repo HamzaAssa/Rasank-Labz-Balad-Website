@@ -67,7 +67,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <p class="text-center">Do you confirm this action?</p>
+                        <p class="text-center" id="text">Do you confirm this action?</p>
                         <form id="confirmform" action="" method="post">
                             @csrf
                             <input id="confirmid" name="id" type="hidden" value="">

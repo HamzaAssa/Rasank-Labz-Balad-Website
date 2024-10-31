@@ -17,7 +17,7 @@ class UnverifiedWordController extends Controller
      */
     public function index()
     {
-        $data = Word::whereNot('status', 2)->get();
+        $data = Word::where('status', '<', 2)->get();
         return view('pages.unverified_words.index', ['data' => $data]);
     }
 
@@ -80,62 +80,81 @@ class UnverifiedWordController extends Controller
     public function addMeaning(Request $request)
     {
         DB::transaction(function() use($request){
-            $otherRelations = WordToWord::where('id', '!=', $request->id)
-            ->where(function($query) use ($request) {
-                $query->orWhere('balochi_id', $request->balochi_id)
-                      ->orWhere('urdu_id', $request->urdu_id)
-                      ->orWhere('english_id', $request->english_id)
-                      ->orWhere('roman_balochi_id', $request->roman_balochi_id);
-            })
-            ->first();
-        
-            if($otherRelations != null) {
-                if($otherRelations->balochi_id != 1 && $request->balochi_id == 1) {
-                    $request->balochi_id = $otherRelations->balochi_id;
-                }
-                if($otherRelations->urdu_id != 2 && $request->urdu_id == 2) {
-                    $request->urdu_id = $otherRelations->urdu_id;
-                }
-                if($otherRelations->english_id != 3 && $request->english_id == 3) {
-                    $request->english_id = $otherRelations->english_id;
-                }
-                if($otherRelations->roman_balochi_id != 4 && $request->roman_balochi_id == 4) {
-                    $request->roman_balochi_id = $otherRelations->roman_balochi_id;
-                }
-
-                $otherRelations->delete();
-            }
-
+            
             $wordRelation = WordToWord::find($request->id);
 
-            $newRelation = new WordToWord();
+            // Remove all previous relations
+                if($wordRelation->balochi_id == 1 && $request->balochi_id != 1) {
+                    $balochiRelation = WordToWord::where('balochi_id', $request->balochi_id)->where('status', 0)->where('id', '!=', $request->id)->get();
+                    foreach ($balochiRelation as $row) {
+                        $row->balochi_id = 1;
+                        $row->save();
+                    }
+                }
+                if($wordRelation->urdu_id == 2 && $request->urdu_id != 2) {
+                    $urduRelation = WordToWord::where('urdu_id', $request->urdu_id)
+                    ->where('status', 0)->where('id', '!=', $request->id)->get();
+                    foreach ($urduRelation as $row) {
+                        $row->urdu_id = 2;
+                        $row->save();
+                    }                    
+                }
+                if($wordRelation->english_id == 3 && $request->english_id != 3) {
+                    $englishRelation = WordToWord::where('english_id', $request->english_id)
+                    ->where('status', 0)->where('id', '!=', $request->id)->get();
+                    foreach ($englishRelation as $row) {
+                        $row->english_id = 3;
+                        $row->save();
+                    }
+                }
+                if($wordRelation->roman_balochi_id == 4 && $request->roman_balochi_id != 4) {
+                    $romanBalochiRelation = WordToWord::where('roman_balochi_id', $request->roman_balochi_id)
+                    ->where('status', 0)->where('id', '!=', $request->id)->get();
+                    foreach ($romanBalochiRelation as $row) {
+                        $row->roman_balochi_id = 4;
+                        $row->save();
+                    }
+                }
 
+
+
+
+            // Add new relations if being removed
             if($wordRelation->balochi_id != 1 && $request->balochi_id == 1) {
-                $newRelation->balochi_id = $wordRelation->balochi_id;
+                $balochiRelation = new WordToWord();
+                $balochiRelation->balochi_id = $wordRelation->balochi_id;
+                $balochiRelation->date = $request->date;
+                $balochiRelation->save();
             }
             if($wordRelation->urdu_id != 2 && $request->urdu_id == 2) {
-                $newRelation->urdu_id = $wordRelation->urdu_id;
+                $urduRelation = new WordToWord();
+                $urduRelation->urdu_id = $wordRelation->urdu_id;
+                $urduRelation->date = $request->date;
+                $urduRelation->save();
             }
             if($wordRelation->english_id != 3 && $request->english_id == 3) {
-                $newRelation->english_id = $wordRelation->english_id;
+                $englishRelation = new WordToWord();
+                $englishRelation->english_id = $wordRelation->english_id;
+                $englishRelation->date = $request->date;
+                $englishRelation->save();
             }
             if($wordRelation->roman_balochi_id != 4 && $request->roman_balochi_id == 4) {
-                $newRelation->roman_balochi_id = $wordRelation->roman_balochi_id;
-            }
-            if(($wordRelation->balochi_id != 1 && $request->balochi_id == 1 ) 
-            || ($wordRelation->urdu_id != 2 && $request->urdu_id == 2 ) 
-            || ($wordRelation->english_id != 3 && $request->english_id == 3 ) 
-            || ($wordRelation->roman_balochi_id != 4 && $request->roman_balochi_id == 4)) {
-                $newRelation->date = date('Y-m-d');
-                $newRelation->save();
+                $romanBalochiRelation = new WordToWord();
+                $romanBalochiRelation->roman_balochi_id = $wordRelation->roman_balochi_id;
+                $romanBalochiRelation->date = $request->date;
+                $romanBalochiRelation->save();
             }
 
+            // Update the current relation
             $wordRelation->balochi_id = $request->balochi_id;
             $wordRelation->urdu_id = $request->urdu_id;
             $wordRelation->english_id = $request->english_id;
             $wordRelation->roman_balochi_id = $request->roman_balochi_id;
             $wordRelation->date = $request->date;
             $wordRelation->save();
+
+            // Delete all empty relations
+           static::deleteAllEmptyRelations();
 
         });
         return redirect()->back()->with('success', 'Meaning added successfully!');
@@ -150,10 +169,28 @@ class UnverifiedWordController extends Controller
     {
         DB::transaction(function() use($request){
             $word = Word::find($request->id);
-            $word->status = 2;
-            $word->save();
+
+            $relation = $word->relation();
+            $relation->status = 1;
+            $relation->save();
+
+            $balochiRelation = Word::find($relation->balochi_id);
+            $balochiRelation->status = 2;
+            $balochiRelation->save();
+
+            $urduRelation = Word::find($relation->urdu_id);
+            $urduRelation->status = 2;
+            $urduRelation->save();
+
+            $englishRelation = Word::find($relation->english_id);
+            $englishRelation->status = 2;
+            $englishRelation->save();
+
+            $romanBalochiRelation = Word::find($relation->roman_balochi_id);
+            $romanBalochiRelation->status = 2;
+            $romanBalochiRelation->save();
         });
-        return redirect()->back()->with('success', 'Word updated successfully!');
+        return redirect()->back()->with('success', "Word Verified along with it's meanings successfully!");
     }
     /**
      * addPending the specified resource in storage.
@@ -223,20 +260,38 @@ class UnverifiedWordController extends Controller
             if($word->status == 1) {
                 $relation = null;
                 if($word->language == "BL") {
-                    $relation = WordToWord::where('balochi_id', $word->id);
-                }else if($word->language == "EN") { 
-                    $relation = WordToWord::where('english_id', $word->id);
+                    $relation = WordToWord::where('balochi_id', $word->id)->where('status', 0)->first();
+                    $relation->balochi_id = 1;
+                    $relation->save();
                 }else if($word->language == "UR") { 
-                    $relation = WordToWord::where('urdu_id', $word->id);
+                    $relation = WordToWord::where('urdu_id', $word->id)->where('status', 0)->first();
+                    $relation->urdu_id = 2;
+                    $relation->save();
+                }else if($word->language == "EN") { 
+                    $relation = WordToWord::where('english_id', $word->id)->where('status', 0)->first();
+                    $relation->english_id = 3;
+                    $relation->save();
                 }else if($word->language == "RB") { 
-                    $relation = WordToWord::where('roman_balochi_id', $word->id);
+                    $relation = WordToWord::where('roman_balochi_id', $word->id)->where('status', 0)->first();
+                    $relation->roman_balochi_id = 4;
+                    $relation->save();
                 }
-                if($relation != null) {
-                    $relation->delete();
-                }
+                static::deleteAllEmptyRelations();
             }
             $word->delete();
         });
         return redirect()->back()->with('danger', 'Word deleted successfully!');
+    }
+
+    static public function deleteAllEmptyRelations() {
+        $allEmptyRelation = WordToWord::where('balochi_id', 1)
+        ->where('urdu_id', 2)
+        ->where('english_id', 3)
+        ->where('roman_balochi_id', 4)
+        ->where('status', 0)->get();
+
+        foreach ($allEmptyRelation as $row) {
+            $row->delete();
+        }
     }
 }

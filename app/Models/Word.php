@@ -11,6 +11,14 @@ class Word extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public function relation()
+    {
+        return WordToWord::where('balochi_id', $this->id)
+        ->orWhere('urdu_id', $this->id)
+        ->orWhere('english_id', $this->id)
+        ->orWhere('roman_balochi_id', $this->id)->first();
+    }
+
     public function definitions()
     {
         return $this->hasMany(Definition::class, 'word_id');
@@ -22,9 +30,6 @@ class Word extends Model
         ->orWhere('urdu_id', $this->id)
         ->orWhere('english_id', $this->id)
         ->orWhere('roman_balochi_id', $this->id)->first();
-        if($result == null) {
-            dd($this->id);
-        }
         $balochiWord = Word::find($result->balochi_id);
         $urduWord = Word::find($result->urdu_id);
         $englishWord = Word::find($result->english_id);

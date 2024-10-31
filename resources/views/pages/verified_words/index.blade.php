@@ -10,6 +10,16 @@
                 Verified Words
             </h1>
         </div>
+        <div class="row">
+            <div class="col-8"></div>
+            <div class="col-4 d-flex justify-content-end">
+                <button class="btn btn-primary mx-2" data-action="{{ route('publish_verified_words') }}"
+                    data-text="Are you sure you want to publish all new words." data-bs-target="#confirmModal"
+                    data-bs-toggle="modal">
+                    Publish Words
+                </button>
+            </div>
+        </div>
         <br>
         <div class="data-table-container row bg-body">
             <table class="table table-striped" id="dataTable">
@@ -18,6 +28,7 @@
                         <th>ID</th>
                         <th>Word</th>
                         <th>Language</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -26,6 +37,7 @@
                         <th>ID</th>
                         <th>Word</th>
                         <th>Language</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
@@ -60,8 +72,15 @@
                             <td>{{ $row->id }}</td>
                             <td class="{{ $dir }}">{{ $row->word }}</td>
                             <td>{{ $language }}</td>
+                            <td>
+                                @if ($row->status == 2)
+                                    <span class="badge bg-danger fw-light">Un Published</span>
+                                @else
+                                    <span class="badge bg-primary fw-light">Published</span>
+                                @endif
+                            </td>
                             <td class="d-flex justify-content-end">
-                                <a class="btn btn-primary mx-2 text-light"
+                                <a class="btn btn-secondary mx-2 text-light"
                                     href="/definition/wordid/{{ $row->id }}">Definition</a>
                             </td>
                         </tr>

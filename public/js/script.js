@@ -10,10 +10,16 @@ $('#deleteModal').on('show.bs.modal', function (event) {
 $('#confirmModal').on('show.bs.modal', function (event) {
     let button = $(event.relatedTarget)
     let id = button.data('id')
+    let text = button.data('text')
     let action = button.data('action')
+    console.log(text)
+    if(!text) {
+        text = "Do you confirm this action?"
+    }
 
     let modal = $(this)
     modal.find('.modal-body #confirmid').val(id)
+    modal.find('.modal-body #text').text(text);
     modal.find('.modal-body #confirmform').attr('action', action);
 })
 

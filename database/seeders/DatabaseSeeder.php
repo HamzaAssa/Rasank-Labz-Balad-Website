@@ -27,22 +27,22 @@ class DatabaseSeeder extends Seeder
         DB::table('words')->insert([
             'word' => '',
             'language' => 'BL',
-            'status' => 2
+            'status' => 3
         ]);
         DB::table('words')->insert([
             'word' => '',
             'language' => 'UR',
-            'status' => 2
+            'status' => 3
         ]);
         DB::table('words')->insert([
             'word' => '',
             'language' => 'EN',
-            'status' => 2
+            'status' => 3
         ]);
         DB::table('words')->insert([
             'word' => '',
             'language' => 'RB',
-            'status' => 2
+            'status' => 3
         ]);
 
     }
