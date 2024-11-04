@@ -11,13 +11,6 @@ use Illuminate\Support\Facades\Validator;
 class RegisterController extends Controller
 {
     /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/dashboard';
-
-    /**
      * Create a new controller instance.
      *
      * @return void
@@ -47,12 +40,17 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         // Validate the registration data
-        $this->validator($request->all())->validate();
+
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('danger', 'User creation request failed.');
+        }
 
         // Create the new user without logging them in
         $this->create($request->all());
 
-        return redirect($this->redirectTo)->with('success', 'User registered successfully.');
+        return redirect()->back()->with('success', 'User registered successfully.');
     }
 
     /**
@@ -66,7 +64,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:3', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'string'],
         ]);
     }

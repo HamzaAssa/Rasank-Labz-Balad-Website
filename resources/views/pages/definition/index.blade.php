@@ -39,7 +39,7 @@
             </h1>
         </div>
         <br>
-        @if ($word->status != 2)
+        @if ($word->status < 2)
             <div class="row">
                 <form class="submit" method="post" action="{{ route('add_definition') }}">
                     @csrf

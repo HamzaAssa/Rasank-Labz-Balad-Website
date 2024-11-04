@@ -52,7 +52,7 @@
             </h2>
         </div>
         <hr>
-        @if ($word->status != 2)
+        @if ($word->status < 2)
             <div class="row">
                 <form class="submit" method="post" action="{{ route('add_example') }}">
                     @csrf

@@ -105,10 +105,17 @@ class VerifiedWordController extends Controller
             
             $publishCount = Word::where('status', 2)->update(['status' => 3]);
 
+            $lastPublishLog = PublishLog::latest('id')->first();
+            $version = 1;
+            if($lastPublishLog != null) {
+                $version = $lastPublishLog->version;
+            }
+
             $log =  new PublishLog();
             $log->start_id = $first->id;
             $log->last_id = $last->id;
             $log->count = $publishCount;
+            $log->version = $version;
             $log->date = date('Y-m-d');
             $log->save();
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\UtilityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UnverifiedWordController;
@@ -14,11 +15,13 @@ use App\Http\Controllers\UnverifiedWordController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::middleware(['api.key'])->group(function () {
+    Route::get('/words/new', [UtilityController::class, 'download']);
+    Route::post('/words/add', [UtilityController::class, 'upload']);
 });
-
-
 
 
 

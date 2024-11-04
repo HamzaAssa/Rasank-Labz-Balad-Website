@@ -10,16 +10,18 @@
                 Verified Words
             </h1>
         </div>
-        <div class="row">
-            <div class="col-8"></div>
-            <div class="col-4 d-flex justify-content-end">
-                <button class="btn btn-primary mx-2" data-action="{{ route('publish_verified_words') }}"
-                    data-text="Are you sure you want to publish all new words." data-bs-target="#confirmModal"
-                    data-bs-toggle="modal">
-                    Publish Words
-                </button>
+        @if (Auth::user() && (Auth::user()->role === 'admin' || Auth::user()->role === 'publisher'))
+            <div class="row">
+                <div class="col-8"></div>
+                <div class="col-4 d-flex justify-content-end">
+                    <button class="btn btn-primary mx-2" data-action="{{ route('publish_verified_words') }}"
+                        data-text="Are you sure you want to publish all new words." data-bs-target="#confirmModal"
+                        data-bs-toggle="modal">
+                        Publish Words
+                    </button>
+                </div>
             </div>
-        </div>
+        @endif
         <br>
         <div class="data-table-container row bg-body">
             <table class="table table-striped" id="dataTable">

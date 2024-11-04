@@ -19,9 +19,10 @@ return new class extends Migration
             $table->integer('last_id');
             $table->integer('count');
             $table->date('date');
+            $table->integer('version');
             $table->timestamps();
             $table->engine = 'InnoDB';
-        });
+        });        
     }
 
     /**
