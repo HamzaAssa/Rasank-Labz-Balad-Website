@@ -49,11 +49,16 @@
                             <td class="d-flex justify-content-center">
                                 @if ($user->id != 1)
                                     <button class="btn btn-success mx-2" data-bs-toggle="modal"
-                                        data-bs-target="#updateModal" type="button">
+                                    data-bs-target="#updateModal" 
+                                    data-id="{{ $user->id }}" 
+                                    data-name="{{ $user->name }}" 
+                                    data-role="{{ $user->role }}" 
+                                    data-email="{{ $user->email }}"
+                                    type="button">
                                         Update
                                     </button>
-                                    <button class="btn btn-danger submit mx-1"
-                                        data-action="{{ route('delete_unverified_words') }}" data-bs-target="#deleteModal"
+                                    <button class="btn btn-danger submit mx-1" data-id="{{ $user->id }}"
+                                        data-action="{{ route('delete_user') }}" data-bs-target="#deleteModal"
                                         data-bs-toggle="modal">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
@@ -148,6 +153,81 @@
             </div>
         </div>
     </div>
+
+<!-- Update User Modal -->
+<div class="modal fade" id="updateModal" aria-labelledby="updateModalLabel" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel"> <i class="fa fa-user-edit"></i> Update User Account</h5>
+                <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateUserForm" method="post" action="{{ route('update_user') }}">
+                    @csrf
+                    <input type="hidden" id="updateId" name="id"> <!-- Hidden field for user ID -->
+
+                    <div class="form-group">
+                        <label class="form-label" for="updateName">Name</label>
+                        <input class="form-control @error('name') is-invalid @enderror" id="updateName" name="name" type="text" required>
+                        @error('name')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <label class="form-label" for="updateRole">Role</label>
+                        <select class="form-select @error('role') is-invalid @enderror" id="updateRole" name="role" required>
+                            <option value="admin">Admin</option>
+                            <option value="verifier">Verifier</option>
+                            <option value="publisher">Publisher</option>
+                        </select>
+                        @error('role')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <label class="form-label" for="updateEmail">Email Address</label>
+                        <input class="form-control @error('email') is-invalid @enderror" id="updateEmail" name="email" type="email" autocomplete="off" required>
+                        @error('email')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">Save Changes</button>
+                </form>
+                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script to handle updating user data in the modal -->
+@section('script')
+    <script>
+     $(document).ready(function() {
+            // Bind event to open the modal and populate with data
+            $('#updateModal').on('show.bs.modal', function(event) {
+                let button = $(event.relatedTarget);  // Button that triggered the modal
+                let id = button.data('id');
+                let name = button.data('name');
+                let role = button.data('role');
+                let email = button.data('email');
+
+                // Update the modal fields with the user data
+                let modal = $(this);
+                modal.find('#updateId').val(id);
+                modal.find('#updateName').val(name);
+                modal.find('#updateRole').val(role);
+                modal.find('#updateEmail').val(email);
+            });
+        });
+    </script>
+@endsection
+
+
 @endsection
 @section('script')
     <script>
