@@ -57,5 +57,7 @@ Route::middleware(['auth'])->group(function () {
 
     # users 
     Route::get('/users',[UsersController::class,'index'])->middleware('role:admin');
+    Route::post('/users/update',[UsersController::class,'update'])->name('update_user')->middleware('role:admin');
+    Route::post('/users/delete',[UsersController::class,'destroy'])->name('delete_user')->middleware('role:admin');
 
 });
