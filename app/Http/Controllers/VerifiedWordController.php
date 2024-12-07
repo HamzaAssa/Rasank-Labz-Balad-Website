@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Word;
+use App\Models\WordToWord;
 use App\Models\PublishLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ class VerifiedWordController extends Controller
      */
     public function index()
     {
-        $data = Word::where('status', '>', 1)->where('id', '>', 4)->get();
+        $data = Word::where('status', '>', 1)->where('id', '>', 4)->take(100)->get();
         return view('pages.verified_words.index', ['data' => $data]);
     }
 

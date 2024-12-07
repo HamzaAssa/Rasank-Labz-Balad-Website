@@ -1,10 +1,10 @@
 $(document).ready(function() {
     $('#dataTable').DataTable( {
-        "bPaginate": false,
+        "bPaginate": true,
         "bLengthChange": false,
         "bFilter": true,
         "bInfo": false,
         "bAutoWidth": false,
-        "pageLength": 25
+        "pageLength": 20
         });
     });

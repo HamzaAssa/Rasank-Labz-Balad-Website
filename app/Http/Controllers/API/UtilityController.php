@@ -16,17 +16,21 @@ class UtilityController extends Controller
     public function download(Request $request)
     {
         $version = $request->query('version') + 1;
+        // $version = $request->query('version');
 
         $oldestPublishinglog = PublishLog::find($version);
 
         $response = [
-            "text" => "No new words available.",
+            // "text" => "No new words available.",
+            "text" => $version.$oldestPublishinglog,
             "words" => [],
             "definitions" => [],
             "examples" => [],
             "wordRelations" => [],
             "newDBVersion" => $request->version,
         ];
+
+
 
         if(!empty($oldestPublishinglog)) {
             $lastPublishLog = PublishLog::latest('id')->first();
