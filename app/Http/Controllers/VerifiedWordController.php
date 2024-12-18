@@ -18,7 +18,7 @@ class VerifiedWordController extends Controller
      */
     public function index()
     {
-        $data = Word::where('status', '>', 1)->where('id', '>', 4)->take(100)->get();
+        $data = Word::where('status', '>', 1)->latest()->take(100)->get();
         return view('pages.verified_words.index', ['data' => $data]);
     }
 
@@ -116,14 +116,15 @@ class VerifiedWordController extends Controller
             $log->start_id = $first->id;
             $log->last_id = $last->id;
             $log->count = $publishCount;
-            $log->version = $version;
+            $log->version = $version + 1;
             $log->date = date('Y-m-d');
             $log->save();
 
             $count = $publishCount;
         });
 
-        return redirect()->back()->with('success', $count.' words published successfully!');
+        // return redirect()->back()->with('success', $count.' words published successfully!');
+        return redirect()->back()->with('success', 'words published successfully!');
 
     }
 }

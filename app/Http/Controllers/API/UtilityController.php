@@ -18,11 +18,11 @@ class UtilityController extends Controller
         $version = $request->query('version') + 1;
         // $version = $request->query('version');
 
-        $oldestPublishinglog = PublishLog::find($version);
+        $oldestPublishinglog = PublishLog::where("version", $version)->get()->first();
 
         $response = [
-            // "text" => "No new words available.",
-            "text" => $version.$oldestPublishinglog,
+            "text" => "No new words available.",
+            // "text" => $version."",
             "words" => [],
             "definitions" => [],
             "examples" => [],
@@ -46,7 +46,7 @@ class UtilityController extends Controller
                 "definitions" => $definitions,
                 "examples" => $examples,
                 "wordRelations" => $wordRelations,
-                "newDBVersion" => $lastPublishLog->id,
+                "newDBVersion" => $lastPublishLog->version,
             ];
         }
 
