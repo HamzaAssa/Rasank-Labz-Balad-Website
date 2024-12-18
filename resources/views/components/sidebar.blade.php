@@ -1,16 +1,16 @@
 <div class="d-flex flex-column flex-shrink-0 p-3 text-light"
     style="height: 100vh; position: fixed; top: 0; left: 0; bottom: 0;">
-    <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none" href="/dashboard">
+    <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none" href="/unverified-words">
         <span class="fs-4">Rasaank Labz Balad</span>
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link text-light" href="dashboard">
                 <i class="fa-solid fa-chart-bar"></i>
                 Dashboard
             </a>
-        </li>
+        </li> --}}
         <li class="nav-item">
             <a class="nav-link text-light" href="/unverified-words">
                 <i class="fa-solid fa-file-circle-xmark"></i>
